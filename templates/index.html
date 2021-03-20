@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.80.0">
+  <title>Project TimeLeap</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    .loader {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('static/images/loading.gif') no-repeat grey;
+}
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <div class=" loader"></div>
+  <header>
+    <div class="collapse bgr-navy" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">About</h4>
+            <p class="text-muted">Add some information about the album below, the author, or any other background
+              context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off
+              to some social networking sites or contact information.</p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4 class="text-white">Contact</h4>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">GitHub repo</a></li>
+              <li><a href="#" class="text-white">Email me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bgr-navy shadow-sm">
+      <div class="container">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+          <h2>TimeLeap</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+          aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light"> Project TimeLeap</h1>
+          <p class="lead text-muted">Beyond the fact that these coloured/restored photos are really enjoyable to look
+            at, colourisation presents a new perspective on history-They offer a more relatable look at capture moments.
+          </p>
+
+          <p>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
+                {% csrf_token %}
+                <input type="file" id="image_input" name="imagefile" class="btn btn-sm btn-outline-secondary bgr-yellow" accept="image/*">
+                <input type="submit" value="colourise" id="colourise_button" multiple="false" class="btn btn-m btn-outline-secondary bgr-yellow" style="padding: .35rem .75rem">
+                </form>
+
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="album py-5 bgr-grey">
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 center">
+          <div class="col">
+            <div class="card shadow-sm"></div>
+              {% if image_uploads %}
+                        <img src="{{ upload_image.url }}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
+              {% else %}
+                    <img src="{% static 'images/demo.jpg' %}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
+              {% endif %}
+
+                <!-- Image magnifier code -->
+                <div id="myModal" class="modal">
+                    <span class="close">×</span>
+                    <img src="{% static 'images/demo.jpg' %}" class="modal-content" id="image_expand">
+                    <div id="caption"></div>
+                </div>
+                <!-- - -->
+
+              <div class="card-body">
+                <p class="card-text">colorised image, click the button below to download. If the button is not yellow,
+                  upload an image to get started!</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    {% if iscolored %}
+                      <a href="{{ upload_image.url }}" id="image_wrapper" class="btn btn-sm btn-outline-secondary bgr-yellow" download="colorised_image">Download
+                      </a>
+                      {% else %}
+                      <button type="button" id="download_button" class="btn btn-sm btn-outline-secondary bgr-yellow" disabled>Download</button>
+                      {% endif %}
+                  </div>
+                  <small class="text-muted">{{img_size}}KB</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+  </main>
+
+  <footer class="text-muted py-5">
+      <div class="container">
+          <p class="mb-1 footer_content">&copy; TimeLeap is a Jason van Raamsdonk creation</p>
+      </div>
+  </footer>
+
+  <script>
+    $(window).load(function() {
+		// Animate loader off screen
+		$(".loader").fadeOut("slow");;
+	});
+
+  </script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/jQuery.js' %}"></script>
+  <script src="{% static 'js/upload.js' %}"></script>
+  <script src="{% static 'js/jQuery.js' %}"></script>
+  <script src="{% static 'js/magnify.js' %}"></script>
+
+
+</body>
+
+</html>
