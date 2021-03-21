@@ -13,16 +13,12 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 # Create your views here.
 
-
-
 def index(request):
     return HttpResponse("Hello world !!!")
 
 
-
-
 def image_upload(request):
-    image_dict = {'image_uploads': False,"upload_image":{"url":""},"iscolored":False, 'img_size':0}
+    image_dict = {'image_uploads': False,"upload_image":{"url":""},"iscolored":False, "initialLoad":None, 'img_size':0}
     if request.method=='POST':
         image_files = request.FILES
         image = image_files["imagefile"]
@@ -39,8 +35,11 @@ def image_upload(request):
             image_dict['iscolored']=True
             image_dict['upload_image']['url']="http://127.0.0.1:8000/static/img_out/"+"siggraph17_"+image.name
             image_dict['img_size'] = int(os.path.getsize("static/img_out/"+"siggraph17_"+image.name)/1024)
+            image_dict['initialLoad']=False
             return render(request, 'index.html',context=image_dict)
         print("***********************************************************************,test",test)
+    else:
+        image_dict['initialLoad']=True
 
     return render(request, 'index.html',context=image_dict)
 

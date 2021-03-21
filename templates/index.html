@@ -93,7 +93,13 @@
             <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
                 {% csrf_token %}
                 <input type="file" id="image_input" name="imagefile" class="btn btn-sm btn-outline-secondary bgr-yellow" accept="image/*">
-                <input type="submit" value="colourise" id="colourise_button" multiple="false" class="btn btn-m btn-outline-secondary bgr-yellow" style="padding: .35rem .75rem">
+
+                {% if iscolored %}
+                  <input type="submit" value="colourise" id="colourise_button" multiple="false" class="btn btn-m btn-outline-secondary bgr-yellow" style="padding: .35rem .75rem" disabled>
+                {% else %}
+                  <input type="submit" value="colourise" id="colourise_button" multiple="false" class="btn btn-m btn-outline-secondary bgr-yellow" style="padding: .35rem .75rem" disabled>
+                {% endif %}
+
                 </form>
 
           </p>
@@ -107,11 +113,17 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 center">
           <div class="col">
             <div class="card shadow-sm"></div>
-              {% if image_uploads %}
-                        <img src="{{ upload_image.url }}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
-              {% else %}
-                    <img src="{% static 'images/demo.jpg' %}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
-              {% endif %}
+
+            {% if initialLoad %}
+                <img src="{% static 'images/samurai_portrait.png' %}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
+            {% else %}
+                {% if image_uploads %}
+                    <img src="{{ upload_image.url }}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
+                {% else %}
+                      <img src="{% static 'images/demo.jpg' %}" class="img-fluid" alt="image" id="image_uploader" data-options="expandAlign:image;" style="width: 100%;">
+                {% endif %}
+            {% endif %}
+
 
                 <!-- Image magnifier code -->
                 <div id="myModal" class="modal">
@@ -129,9 +141,9 @@
                     {% if iscolored %}
                       <a href="{{ upload_image.url }}" id="image_wrapper" class="btn btn-sm btn-outline-secondary bgr-yellow" download="colorised_image">Download
                       </a>
-                      {% else %}
+                    {% else %}
                       <button type="button" id="download_button" class="btn btn-sm btn-outline-secondary bgr-yellow" disabled>Download</button>
-                      {% endif %}
+                    {% endif %}
                   </div>
                   <small class="text-muted">{{img_size}}KB</small>
                 </div>
