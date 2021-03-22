@@ -33,7 +33,7 @@ def image_upload(request):
         if test:
             image_dict['image_uploads']=True
             image_dict['iscolored']=True
-            image_dict['upload_image']['url']="http://127.0.0.1:8000/static/img_out/"+"siggraph17_"+image.name
+            image_dict['upload_image']['url']="http://127.0.0.1:8080/static/img_out/"+"siggraph17_"+image.name
             image_dict['img_size'] = int(os.path.getsize("static/img_out/"+"siggraph17_"+image.name)/1024)
             image_dict['initialLoad']=False
             return render(request, 'index.html',context=image_dict)
