@@ -23,7 +23,8 @@ def image_upload(request):
         image_files = request.FILES
         image = image_files["imagefile"]
         directory = os.getcwd()
-        filedir=directory + '/static/images/'+image.name
+        # filedir=directory + '/static/images/'+image.name
+        filedir= 'static/images/'+image.name
 
         fs = FileSystemStorage()
         filename = fs.save(filedir, image)
