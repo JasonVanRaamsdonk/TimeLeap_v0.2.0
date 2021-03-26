@@ -92,7 +92,7 @@
           <p>
             <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
                 {% csrf_token %}
-                <input type="file" id="image_input" name="imagefile" class="btn btn-sm btn-outline-secondary bgr-yellow" accept="image/*">
+                <input type="file" id="image_input" name="imagefile" class="btn btn-sm btn-outline-secondary bgr-yellow" accept=".png, .jpg, .jpeg"">
 
                 {% if iscolored %}
                   <input type="submit" value="colourise" id="colourise_button" multiple="false" class="btn btn-m btn-outline-secondary bgr-yellow" style="padding: .35rem .75rem" disabled>
